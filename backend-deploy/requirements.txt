@@ -1,0 +1,41 @@
+# Requirements for the scoped-down public backend (main_public.py).
+# ONLY packages actually imported by auth.py, apk.py, and their transitive
+# dependency chain (confirmed clean in Step 3). No JARVIS-only packages.
+
+# FastAPI stack — used by main_public.py, auth.py, apk.py, dependencies.py
+fastapi==0.136.3
+
+# ASGI server — main_public.py if __name__ block
+uvicorn==0.49.0
+
+# Database ORM — database.py, shared_models/auth_models.py
+sqlalchemy==2.0.50
+
+# Data validation — auth.py (BaseModel), shared_types/responses.py, config.py (ConfigDict)
+pydantic==2.13.4
+
+# Settings with .env support — config.py (BaseSettings)
+pydantic-settings==2.14.1
+
+# Password hashing — security/crypto.py (CryptContext with argon2 scheme)
+passlib==1.7.4
+
+# Required by passlib for argon2 scheme — security/crypto.py
+argon2-cffi==25.1.0
+
+# Transactional email — services/email_service.py
+resend==2.32.2
+
+# Logging — main_public.py, database.py
+loguru==0.7.3
+
+# Multipart form parsing — required by FastAPI's UploadFile/Form used in apk.py
+python-multipart==0.0.32
+
+# .env file loading — database.py calls load_dotenv() directly
+python-dotenv==1.1.1
+
+# PostgreSQL driver — for cloud database deployment (main_public.py only)
+psycopg2-binary==2.9.12
+
+azure-storage-blob

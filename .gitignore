@@ -1,0 +1,34 @@
+# === Backend (Python) ===
+backend-deploy/venv-public/
+backend-deploy/venv/
+backend-deploy/__pycache__/
+backend-deploy/**/__pycache__/
+backend-deploy/*.pyc
+backend-deploy/data/
+backend-deploy/apk_storage/
+backend-deploy/installer_storage/
+backend-deploy/.env
+backend-deploy/.git.bak/
+
+# === Frontend (Next.js) ===
+frontend-website/node_modules/
+frontend-website/.next/
+frontend-website/dist/
+frontend-website/out/
+frontend-website/.env
+frontend-website/.env.local
+frontend-website/.env.*.local
+frontend-website/service-account-key.json
+frontend-website/.vercel
+frontend-website/tsconfig.tsbuildinfo
+frontend-website/*.log
+frontend-website/npm-debug.log*
+frontend-website/ASHWA_WEBSITE.zip
+
+# === General ===
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo

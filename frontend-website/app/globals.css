@@ -1,0 +1,196 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=IBM+Plex+Mono:wght@300;400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0e0a07;
+  --bg-raised: #13100c;
+  --bg-overlay: rgba(18, 14, 10, 0.85);
+  --surface: rgba(26, 19, 14, 0.6);
+  --surface-hover: rgba(32, 24, 18, 0.85);
+
+  --bone: #ece3d3;
+  --bone-muted: rgba(236, 227, 211, 0.72);
+  --muted: #9a9184;
+  --muted-2: rgba(154, 145, 132, 0.85);
+
+  --ember: #e0723a;
+  --ember-soft: #c85e2a;
+  --ember-glow: #f3a861;
+  --ember-dim: rgba(224, 114, 58, 0.18);
+  --ember-border: rgba(224, 114, 58, 0.28);
+  --ember-border-strong: rgba(224, 114, 58, 0.5);
+
+  --border-color: rgba(120, 95, 70, 0.28);
+  --border-mid: rgba(120, 95, 70, 0.45);
+  --border-strong: rgba(120, 95, 70, 0.65);
+
+  --shadow-ember: 0 0 48px -6px rgba(224, 114, 58, 0.55), 0 0 120px -24px rgba(243, 168, 97, 0.35);
+  --shadow-card: 0 4px 32px rgba(0, 0, 0, 0.5);
+}
+
+@layer base {
+  * {
+    @apply box-border m-0 p-0 min-w-0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  body {
+    @apply bg-obsidian text-bone font-sans antialiased;
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--ember);
+    color: var(--bg);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button,
+  input {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+  }
+
+  input {
+    outline: 0;
+  }
+
+  /* Buttons and links have no built-in focus treatment of their own (Input
+     supplies its own border/glow focus style above), so give keyboard focus
+     a visible, on-brand ring instead of relying on the browser default. */
+  button:focus-visible,
+  a:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--ember);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  img,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+@layer components {
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.65 0 0 0 0 0.45 0 0 0 0 0.25 0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>");
+    opacity: 0.045;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    z-index: 200;
+  }
+
+  .ambient-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 380px;
+    background: radial-gradient(ellipse 80% 100% at 50% -10%, rgba(224, 114, 58, 0.22) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .ambient-bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 240px;
+    background: radial-gradient(ellipse 60% 80% at 50% 110%, rgba(243, 168, 97, 0.09) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .scan {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 3px,
+      rgba(255, 255, 255, 0.008) 3px,
+      rgba(255, 255, 255, 0.008) 4px
+    );
+  }
+
+  .section-eyebrow {
+    @apply inline-flex items-center gap-2.5 font-mono text-label uppercase tracking-[0.38em] text-ember mb-[18px];
+  }
+
+  .section-eyebrow::before {
+    content: "◆";
+    font-size: 7px;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    @apply font-display font-light text-bone leading-[1.05];
+    font-size: clamp(1.9rem, 4.2vw, 3.4rem);
+    margin-bottom: 14px;
+  }
+
+  .section-sub {
+    @apply text-bone-muted leading-[1.75];
+    font-size: clamp(0.9rem, 1.4vw, 0.98rem);
+    max-width: 56ch;
+  }
+
+  .ruled-title {
+    @apply flex items-center gap-5 font-mono text-[9px] uppercase tracking-[0.4em] text-muted;
+  }
+
+  .ruled-title::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--border-color);
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .label-mono {
+    @apply font-mono text-label uppercase text-muted;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
