@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
+import { SectionHeader } from "@/components/ui/section-header";
 
 const commands = [
   {
@@ -48,20 +49,13 @@ export function ExperienceSection() {
       className="relative z-10 max-w-[1280px] mx-auto mt-16 md:mt-24 px-4 md:px-12"
       aria-labelledby="experience-title"
     >
-      <div
-        className={`transition-all duration-700 ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-        }`}
-      >
-        <div className="section-eyebrow">In action</div>
-        <h2 id="experience-title" className="section-title">
-          Hear it think.
-        </h2>
-        <p className="section-sub mb-10 md:mb-16">
-          Click any command to see how Ashwatthama responds. These are real
-          interaction patterns.
-        </p>
-      </div>
+      <SectionHeader
+        eyebrow="In action"
+        titleId="experience-title"
+        title="Hear it think."
+        subtitle="Click any command to see how Ashwatthama responds. These are real interaction patterns."
+        className="mb-10 md:mb-16"
+      />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}

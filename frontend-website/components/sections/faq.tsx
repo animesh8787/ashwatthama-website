@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
+import { SectionHeader } from "@/components/ui/section-header";
 
 const faqs = [
   {
@@ -46,16 +47,12 @@ export function FAQSection() {
       className="relative z-10 max-w-[820px] mx-auto mt-16 md:mt-24 px-4 md:px-12"
       aria-labelledby="faq-title"
     >
-      <div
-        className={`transition-all duration-700 mb-10 md:mb-14 ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-        }`}
-      >
-        <div className="section-eyebrow">Questions</div>
-        <h2 id="faq-title" className="section-title">
-          Common transmissions.
-        </h2>
-      </div>
+      <SectionHeader
+        eyebrow="Questions"
+        titleId="faq-title"
+        title="Common transmissions."
+        className="mb-10 md:mb-14"
+      />
 
       <div>
         {faqs.map((faq, i) => (

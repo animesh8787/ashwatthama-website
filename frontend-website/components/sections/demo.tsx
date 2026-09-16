@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
+import { SectionHeader } from "@/components/ui/section-header";
 import { Play } from "lucide-react";
 
 export function DemoSection() {
@@ -14,20 +15,17 @@ export function DemoSection() {
       className="relative z-10 max-w-[1280px] mx-auto mt-16 md:mt-24 px-4 md:px-12"
       aria-labelledby="demo-title"
     >
-      <div
-        className={`transition-all duration-700 mb-8 md:mb-12 ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-        }`}
-      >
-        <div className="section-eyebrow">Preview</div>
-        <h2 id="demo-title" className="section-title">
-          See it <em className="italic text-ember-glow">think.</em>
-        </h2>
-        <p className="section-sub">
-          A full walkthrough of Ashwatthama running locally — voice, memory, and
-          desktop control in action.
-        </p>
-      </div>
+      <SectionHeader
+        eyebrow="Preview"
+        titleId="demo-title"
+        title={
+          <>
+            See it <em className="italic text-ember-glow">think.</em>
+          </>
+        }
+        subtitle="A full walkthrough of Ashwatthama running locally — voice, memory, and desktop control in action."
+        className="mb-8 md:mb-12"
+      />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}

@@ -1,6 +1,26 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { ScrollProgress } from "@/components/scroll-progress";
+import { SmoothScroll } from "@/components/smooth-scroll";
+import { ThemeProvider } from "@/hooks/use-theme";
+
+// Applies the saved (or system) theme to <html> before first paint, so
+// there is no flash of the wrong theme on load. Runs as a blocking inline
+// script because this is a static export with no server to read cookies
+// and pick a theme ahead of time.
+const THEME_BOOT_SCRIPT = `
+(function () {
+  try {
+    var stored = localStorage.getItem("ashwatthama-theme");
+    var theme = stored === "light" || stored === "dark"
+      ? stored
+      : (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+    document.documentElement.setAttribute("data-theme", theme);
+  } catch (e) {
+    document.documentElement.setAttribute("data-theme", "dark");
+  }
+})();
+`;
 
 export const metadata: Metadata = {
   title: "Ashwatthama — The Immortal AI Companion",
@@ -58,14 +78,18 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
       </head>
       <body className="grain">
-        <ScrollProgress />
-        {/* Global atmosphere layers */}
-        <div className="ambient-top" aria-hidden="true" />
-        <div className="ambient-bottom" aria-hidden="true" />
-        <div className="scan" aria-hidden="true" />
-        {children}
+        <ThemeProvider>
+          <SmoothScroll />
+          <ScrollProgress />
+          {/* Global atmosphere layers */}
+          <div className="ambient-top" aria-hidden="true" />
+          <div className="ambient-bottom" aria-hidden="true" />
+          <div className="scan" aria-hidden="true" />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

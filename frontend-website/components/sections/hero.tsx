@@ -1,42 +1,68 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import { EmberCanvas } from "@/components/ember-canvas";
 import { Button } from "@/components/ui/button";
 import { Download, Play } from "lucide-react";
 
 export function HeroSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // As the user scrolls the hero out of view, the content fades, lifts and
+  // very slightly shrinks — with the orb moving a touch faster than the text
+  // beneath it for a shallow parallax depth, rather than everything sliding
+  // off screen as one flat block.
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, -60]);
+  const contentScale = useTransform(scrollYProgress, [0, 1], [1, 0.94]);
+  const orbY = useTransform(scrollYProgress, [0, 1], [0, -110]);
+  const ringsScale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
+  const ringsOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
   return (
     <section
+      ref={sectionRef}
       className="relative z-10 min-h-dvh flex flex-col items-center justify-center px-4 md:px-16 pt-[100px] pb-[60px] md:pt-[120px] lg:pt-[140px] lg:pb-[80px] text-center overflow-hidden"
       aria-label="Hero"
     >
       <EmberCanvas />
 
       {/* Sacred geometry rings */}
-      <div
+      <motion.div
+        style={{ scale: ringsScale, opacity: ringsOpacity }}
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-[1] pointer-events-none w-[min(700px,90vw)] h-[min(700px,90vw)] lg:w-[min(920px,72vw)] lg:h-[min(920px,72vw)] rounded-full border border-ember/[0.06]"
         aria-hidden="true"
       >
         <div className="absolute inset-[40px] rounded-full border border-ember/[0.05]" />
         <div className="absolute inset-[100px] rounded-full border border-ember/[0.04]" />
-      </div>
+      </motion.div>
 
-      <div className="relative z-[3] flex flex-col items-center max-w-[1000px] lg:max-w-[1160px] w-full">
+      <motion.div
+        style={{ opacity: contentOpacity, y: contentY, scale: contentScale }}
+        className="relative z-[3] flex flex-col items-center max-w-[1000px] lg:max-w-[1160px] w-full"
+      >
         {/* Orb */}
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
+          style={{ y: orbY }}
           className="relative w-[clamp(80px,14vw,120px)] h-[clamp(80px,14vw,120px)] rounded-full mb-7 md:mb-10 flex items-center justify-center animate-orb-pulse"
-          style={{
-            background:
-              "radial-gradient(circle at 38% 38%, rgba(243,168,97,0.5), rgba(224,114,58,0.3) 40%, rgba(140,60,20,0.15) 70%, transparent)",
-            border: "1px solid rgba(224,114,58,0.35)",
-          }}
-          aria-hidden="true"
         >
+          <div
+            className="absolute inset-0 rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle at 38% 38%, rgba(243,168,97,0.5), rgba(224,114,58,0.3) 40%, rgba(140,60,20,0.15) 70%, transparent)",
+              border: "1px solid rgba(224,114,58,0.35)",
+            }}
+          />
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -44,7 +70,7 @@ export function HeroSection() {
             strokeWidth="1.4"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="w-[38%] h-[38%] text-ember-glow opacity-85"
+            className="relative w-[38%] h-[38%] text-ember-glow opacity-85"
           >
             <path d="M12 2c0 6-6 6-6 12a6 6 0 0 0 12 0c0-6-6-6-6-12z" />
             <path d="M12 2c0 4 3 5 3 9" />
@@ -56,7 +82,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="inline-flex items-center gap-2.5 mb-6 md:mb-8 border border-border-mid bg-surface backdrop-blur-md rounded-full px-[18px] py-[7px] font-mono text-label-lg uppercase tracking-[0.3em] text-muted"
+          className="inline-flex items-center gap-2.5 mb-6 md:mb-8 border border-border-mid bg-surface/60 backdrop-blur-md rounded-full px-[18px] py-[7px] font-mono text-label-lg uppercase tracking-[0.3em] text-muted"
           role="status"
         >
           <span className="text-ember text-[8px]" aria-hidden="true">
@@ -67,9 +93,9 @@ export function HeroSection() {
 
         {/* Title */}
         <motion.h1
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.35 }}
+          initial={{ opacity: 0, y: 18, filter: "blur(10px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 1, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
           className="font-display font-light leading-[0.88] tracking-[0.01em] text-bone whitespace-nowrap px-[0.04em]"
           style={{ fontSize: "clamp(3rem, 13vw, 10rem)" }}
           aria-label="Ashwatthama"
@@ -133,7 +159,7 @@ export function HeroSection() {
             </Button>
           </a>
         </motion.div>
-      </div>
+      </motion.div>
 
       {/* Scroll cue */}
       <motion.div

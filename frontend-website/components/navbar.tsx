@@ -6,6 +6,7 @@ import { useActiveSection } from "@/hooks/use-active-section";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { User, UserPlus, LogOut, Menu, X } from "lucide-react";
 
 const navLinks = [
@@ -87,6 +88,7 @@ export function Navbar() {
 
         {/* Right side */}
         <div className="flex items-center gap-3 lg:gap-4">
+          <ThemeToggle className="hidden md:flex" />
           {isAuthenticated ? (
             <div className="hidden md:flex items-center gap-3">
               <span className="font-mono text-label text-muted truncate max-w-[120px]">
@@ -120,6 +122,8 @@ export function Navbar() {
               </Link>
             </div>
           )}
+
+          <ThemeToggle className="flex md:hidden" />
 
           {/* Mobile menu button */}
           <button

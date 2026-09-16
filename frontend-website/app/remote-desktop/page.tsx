@@ -101,7 +101,7 @@ export default function RemoteDesktopPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.05 + i * 0.08 }}
-              className="bg-obsidian-raised p-6 md:p-8 flex flex-col gap-0 transition-colors duration-200 hover:bg-[rgba(24,17,12,1)]"
+              className="bg-obsidian-raised p-6 md:p-8 flex flex-col gap-0 transition-colors duration-200 hover:bg-surface-hover"
             >
               <cap.icon
                 size={34}

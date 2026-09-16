@@ -9,35 +9,41 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // obsidian/surface/ember DEFAULTs route through the `<alpha-value>`
+        // pattern (backed by *-rgb CSS variables in globals.css) so Tailwind
+        // opacity modifiers (bg-obsidian/80, etc.) keep working once the
+        // underlying value is swapped per light/dark theme. Everything else
+        // is used without a slash modifier anywhere in the app, so it can
+        // reference the themed CSS variable directly.
         obsidian: {
-          DEFAULT: "#0e0a07",
-          raised: "#13100c",
-          overlay: "rgba(18,14,10,0.85)",
+          DEFAULT: "rgb(var(--bg-rgb) / <alpha-value>)",
+          raised: "rgb(var(--bg-raised-rgb) / <alpha-value>)",
+          overlay: "var(--bg-overlay)",
         },
         surface: {
-          DEFAULT: "rgba(26,19,14,0.6)",
-          hover: "rgba(32,24,18,0.85)",
+          DEFAULT: "rgb(var(--surface-rgb) / <alpha-value>)",
+          hover: "var(--surface-hover)",
         },
         bone: {
-          DEFAULT: "#ece3d3",
-          muted: "rgba(236,227,211,0.72)",
+          DEFAULT: "var(--bone)",
+          muted: "var(--bone-muted)",
         },
         muted: {
-          DEFAULT: "#9a9184",
-          2: "rgba(154,145,132,0.85)",
+          DEFAULT: "var(--muted)",
+          2: "var(--muted-2)",
         },
         ember: {
-          DEFAULT: "#e0723a",
-          soft: "#c85e2a",
-          glow: "#f3a861",
-          dim: "rgba(224,114,58,0.18)",
-          border: "rgba(224,114,58,0.28)",
-          "border-strong": "rgba(224,114,58,0.5)",
+          DEFAULT: "rgb(var(--ember-rgb) / <alpha-value>)",
+          soft: "var(--ember-soft)",
+          glow: "var(--ember-glow)",
+          dim: "var(--ember-dim)",
+          border: "var(--ember-border)",
+          "border-strong": "var(--ember-border-strong)",
         },
         border: {
-          DEFAULT: "rgba(120,95,70,0.28)",
-          mid: "rgba(120,95,70,0.45)",
-          strong: "rgba(120,95,70,0.65)",
+          DEFAULT: "var(--border-color)",
+          mid: "var(--border-mid)",
+          strong: "var(--border-strong)",
         },
       },
       fontFamily: {
@@ -46,9 +52,12 @@ const config: Config = {
         mono: ['"IBM Plex Mono"', '"JetBrains Mono"', "ui-monospace", "Menlo", "monospace"],
       },
       fontSize: {
-        micro: ["8px", { letterSpacing: "0.32em", lineHeight: "1.5" }],
-        label: ["9px", { letterSpacing: "0.3em", lineHeight: "1.5" }],
-        "label-lg": ["10.5px", { letterSpacing: "0.28em", lineHeight: "1.5" }],
+        // Nudged up from 8/9px — still reads as a small mono caption at
+        // default browser zoom on a laptop, but 8-9px was uncomfortably
+        // small for real reading rather than pure decoration.
+        micro: ["9.5px", { letterSpacing: "0.3em", lineHeight: "1.5" }],
+        label: ["10px", { letterSpacing: "0.28em", lineHeight: "1.5" }],
+        "label-lg": ["11px", { letterSpacing: "0.26em", lineHeight: "1.5" }],
       },
       boxShadow: {
         ember: "0 0 48px -6px rgba(224,114,58,0.55), 0 0 120px -24px rgba(243,168,97,0.35)",

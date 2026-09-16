@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 import { useCountUp } from "@/hooks/use-count-up";
+import { SectionHeader } from "@/components/ui/section-header";
 import { Mic, Lock, WifiOff, Database } from "lucide-react";
 
 const stats: { value: number | null; num: string; unit: string; label: string }[] = [
@@ -68,33 +69,28 @@ const privacyItems = [
 ];
 
 export function PrivacySection() {
-  const { ref: refHeader, isVisible: visibleHeader } = useScrollReveal<HTMLDivElement>();
   const { ref: refLeft, isVisible: visibleLeft } = useScrollReveal<HTMLDivElement>();
   const { ref: refRight, isVisible: visibleRight } = useScrollReveal<HTMLDivElement>();
 
   return (
     <section
-      ref={refHeader}
       id="privacy"
       className="relative z-10 max-w-[1280px] mx-auto mt-16 md:mt-24 px-4 md:px-12"
       aria-labelledby="privacy-title"
     >
-      <div
-        className={`transition-all duration-700 ${
-          visibleHeader ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-        }`}
-      >
-        <div className="section-eyebrow">Privacy</div>
-        <h2 id="privacy-title" className="section-title">
-          Your machine.
-          <br />
-          Your data. Full stop.
-        </h2>
-        <p className="section-sub mb-10 md:mb-16">
-          Privacy isn't a feature added on top. It's the architecture. The AI
-          runs locally. The memory stores locally. The voice never leaves.
-        </p>
-      </div>
+      <SectionHeader
+        eyebrow="Privacy"
+        titleId="privacy-title"
+        title={
+          <>
+            Your machine.
+            <br />
+            Your data. Full stop.
+          </>
+        }
+        subtitle="Privacy isn't a feature added on top. It's the architecture. The AI runs locally. The memory stores locally. The voice never leaves."
+        className="mb-10 md:mb-16"
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16">
         <div
@@ -109,7 +105,7 @@ export function PrivacySection() {
               initial={{ opacity: 0, y: 10 }}
               animate={visibleLeft ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="flex items-start gap-[18px] p-4 md:p-5 border-b border-border last:border-b-0 transition-colors duration-200 hover:bg-[rgba(26,19,14,0.5)]"
+              className="flex items-start gap-[18px] p-4 md:p-5 border-b border-border last:border-b-0 transition-colors duration-200 hover:bg-surface-hover"
             >
               <item.icon
                 size={28}

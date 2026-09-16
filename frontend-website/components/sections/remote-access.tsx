@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { SectionHeader } from "@/components/ui/section-header";
+import { TiltCard } from "@/components/ui/tilt-card";
 import {
   Globe,
   Terminal,
@@ -53,46 +55,44 @@ export function RemoteAccessSection() {
       className="relative z-10 max-w-[1280px] mx-auto mt-16 md:mt-24 px-4 md:px-12"
       aria-labelledby="remote-access-title"
     >
-      <div
-        className={`transition-all duration-700 ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-        }`}
-      >
-        <div className="section-eyebrow">Remote Control</div>
-        <h2 id="remote-access-title" className="section-title">
-          Your computer,
-          <br />
-          <em className="italic text-ember-glow">anywhere.</em>
-        </h2>
-        <p className="section-sub mb-10 md:mb-16 max-w-[60ch]">
-          Pair your desktop once, then control it from any browser or Android device.
-          Two-layer authentication means your machine is never exposed to the world — only to you.
-        </p>
-      </div>
+      <SectionHeader
+        eyebrow="Remote Control"
+        titleId="remote-access-title"
+        title={
+          <>
+            Your computer,
+            <br />
+            <em className="italic text-ember-glow">anywhere.</em>
+          </>
+        }
+        subtitle="Pair your desktop once, then control it from any browser or Android device. Two-layer authentication means your machine is never exposed to the world — only to you."
+        className="mb-10 md:mb-16 [&_.section-sub]:max-w-[60ch]"
+      />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-border-mid border border-border mb-10 md:mb-14">
         {capabilities.map((cap, i) => (
-          <motion.div
-            key={cap.title}
-            initial={{ opacity: 0, y: 20 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.05 + i * 0.08 }}
-            className="bg-obsidian-raised p-6 md:p-8 flex flex-col gap-0 transition-colors duration-200 hover:bg-[rgba(24,17,12,1)]"
-          >
-            <cap.icon
-              size={34}
-              className="text-ember opacity-85 mb-4"
-              strokeWidth={1.2}
-            />
-            <h3 className="font-display font-normal text-bone mb-2.5 leading-tight"
-              style={{ fontSize: "clamp(1.1rem, 1.9vw, 1.35rem)" }}
+          <TiltCard key={cap.title} maxTilt={5}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isVisible ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.05 + i * 0.08 }}
+              className="h-full bg-obsidian-raised p-6 md:p-8 flex flex-col gap-0 transition-colors duration-200 hover:bg-surface-hover"
             >
-              {cap.title}
-            </h3>
-            <p className="text-[0.88rem] leading-[1.7] text-muted flex-1">
-              {cap.desc}
-            </p>
-          </motion.div>
+              <cap.icon
+                size={34}
+                className="text-ember opacity-85 mb-4"
+                strokeWidth={1.2}
+              />
+              <h3 className="font-display font-normal text-bone mb-2.5 leading-tight"
+                style={{ fontSize: "clamp(1.1rem, 1.9vw, 1.35rem)" }}
+              >
+                {cap.title}
+              </h3>
+              <p className="text-[0.88rem] leading-[1.7] text-muted flex-1">
+                {cap.desc}
+              </p>
+            </motion.div>
+          </TiltCard>
         ))}
       </div>
 

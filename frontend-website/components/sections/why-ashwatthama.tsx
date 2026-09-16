@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
+import { SectionHeader } from "@/components/ui/section-header";
+import { TiltCard } from "@/components/ui/tilt-card";
 import { Eye, Shield, Brain, Lock } from "lucide-react";
 
 const reasons = [
@@ -36,44 +38,42 @@ export function WhyAshwatthamaSection() {
       className="relative z-10 max-w-[1280px] mx-auto mt-16 md:mt-24 px-4 md:px-12"
       aria-labelledby="why-title"
     >
-      <div
-        className={`transition-all duration-700 ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-        }`}
-      >
-        <div className="section-eyebrow">Philosophy</div>
-        <h2 id="why-title" className="section-title">
-          Why Ashwatthama
-          <br />
-          <em className="italic text-ember-glow">exists.</em>
-        </h2>
-        <p className="section-sub mb-12 md:mb-16">
-          The world has accepted that AI must live in the cloud. We reject that
-          premise. Intelligence should serve the individual, not the corporation.
-        </p>
-      </div>
+      <SectionHeader
+        eyebrow="Philosophy"
+        titleId="why-title"
+        title={
+          <>
+            Why Ashwatthama
+            <br />
+            <em className="italic text-ember-glow">exists.</em>
+          </>
+        }
+        subtitle="The world has accepted that AI must live in the cloud. We reject that premise. Intelligence should serve the individual, not the corporation."
+        className="mb-12 md:mb-16"
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border border border-border">
         {reasons.map((reason, i) => (
-          <motion.div
-            key={reason.title}
-            initial={{ opacity: 0, y: 20 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.1 + i * 0.1 }}
-            className="bg-obsidian-raised p-6 md:p-10 transition-colors duration-200 hover:bg-[rgba(24,17,12,1)]"
-          >
-            <reason.icon
-              size={34}
-              className="text-ember opacity-85 mb-5"
-              strokeWidth={1.2}
-            />
-            <h3 className="font-display font-normal text-bone text-xl md:text-2xl leading-tight mb-3">
-              {reason.title}
-            </h3>
-            <p className="text-[0.88rem] leading-[1.7] text-muted">
-              {reason.desc}
-            </p>
-          </motion.div>
+          <TiltCard key={reason.title} maxTilt={4}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isVisible ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.1 + i * 0.1 }}
+              className="h-full bg-obsidian-raised p-6 md:p-10 transition-colors duration-200 hover:bg-surface-hover"
+            >
+              <reason.icon
+                size={34}
+                className="text-ember opacity-85 mb-5"
+                strokeWidth={1.2}
+              />
+              <h3 className="font-display font-normal text-bone text-xl md:text-2xl leading-tight mb-3">
+                {reason.title}
+              </h3>
+              <p className="text-[0.88rem] leading-[1.7] text-muted">
+                {reason.desc}
+              </p>
+            </motion.div>
+          </TiltCard>
         ))}
       </div>
     </section>

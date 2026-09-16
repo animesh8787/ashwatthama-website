@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Mail, ArrowLeft, CheckCircle, Lock } from "lucide-react";
+import { Mail, ArrowLeft, CheckCircle, Lock, Eye, EyeOff } from "lucide-react";
 
 function Shell({ children }: { children: React.ReactNode }) {
   return (
@@ -127,6 +127,8 @@ function ConfirmResetForm({ token }: { token: string }) {
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
   const [formError, setFormError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -192,28 +194,52 @@ function ConfirmResetForm({ token }: { token: string }) {
           <label className="block font-mono text-[9px] uppercase tracking-[0.28em] text-muted mb-2">
             New password
           </label>
-          <Input
-            type="password"
-            required
-            autoComplete="new-password"
-            placeholder="••••••••"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <div className="relative">
+            <Input
+              type={showPassword ? "text" : "password"}
+              required
+              autoComplete="new-password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="pr-11"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              className="absolute right-0 top-0 h-full w-11 flex items-center justify-center text-muted hover:text-ember transition-colors"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              aria-pressed={showPassword}
+            >
+              {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+            </button>
+          </div>
         </div>
 
         <div>
           <label className="block font-mono text-[9px] uppercase tracking-[0.28em] text-muted mb-2">
             Confirm new password
           </label>
-          <Input
-            type="password"
-            required
-            autoComplete="new-password"
-            placeholder="••••••••"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
+          <div className="relative">
+            <Input
+              type={showConfirmPassword ? "text" : "password"}
+              required
+              autoComplete="new-password"
+              placeholder="••••••••"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="pr-11"
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword((v) => !v)}
+              className="absolute right-0 top-0 h-full w-11 flex items-center justify-center text-muted hover:text-ember transition-colors"
+              aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+              aria-pressed={showConfirmPassword}
+            >
+              {showConfirmPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+            </button>
+          </div>
         </div>
 
         {formError && (
