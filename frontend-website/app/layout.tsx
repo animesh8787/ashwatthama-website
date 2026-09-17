@@ -70,7 +70,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      {/* suppressHydrationWarning: THEME_BOOT_SCRIPT below sets data-theme
+          on this element before React hydrates, by design (avoids a flash
+          of the wrong theme) — that intentional mismatch was logging a
+          real-looking console warning on every load. */}
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
