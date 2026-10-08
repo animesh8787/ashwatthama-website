@@ -1,108 +1,87 @@
-"use client";
+import { Reveal } from "@/components/ui/reveal";
 
-import { useScrollReveal } from "@/hooks/use-scroll-reveal";
+const exchange = [
+  { who: "you", text: "What did I discuss last Tuesday about the project deadline?" },
+  {
+    who: "ashwatthama",
+    text: "You noted the backend needed two more days and mentioned coordinating with the design team on Thursday. You also flagged the authentication flow as incomplete.",
+  },
+  { who: "you", text: "What's on my screen right now?" },
+  {
+    who: "ashwatthama",
+    text: "You have a code editor open with a Python file, which looks like a route handler. There's also a browser tab showing pull requests.",
+  },
+  { who: "you", text: "Set a reminder for 4pm to review that PR." },
+  { who: "ashwatthama", text: "Done. I'll notify you at 4:00 PM.", cursor: true },
+];
 
 export function IntroSection() {
-  const { ref: refLeft, isVisible: visibleLeft } = useScrollReveal<HTMLDivElement>();
-  const { ref: refRight, isVisible: visibleRight } = useScrollReveal<HTMLDivElement>();
-
   return (
-    <section
-      className="relative z-10 max-w-[1280px] mx-auto mt-16 md:mt-24 px-4 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-20 items-center"
-      aria-label="Product introduction"
-    >
-      <div
-        ref={refLeft}
-        className={`transition-all duration-700 ${
-          visibleLeft ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-        }`}
-      >
-        <div className="section-eyebrow">What it is</div>
-        <h2 className="section-title">
-          An AI that belongs
-          <br />
-          <em className="italic text-ember-glow">to you.</em>
-        </h2>
-        <p className="section-sub mb-6">
-          Ashwatthama isn't a web app you log into. It's a desktop presence — an
-          AI operating companion that integrates with your computer, speaks and
-          listens in natural language, reads your screen, and learns from every
-          interaction.
-        </p>
-        <p className="section-sub">
-          You ask it to draft an email, and it does. You ask what's on your screen,
-          and it describes it. You tell it something important, and it remembers —
-          not until you close the tab, but permanently, privately, on your machine.
-        </p>
-      </div>
+    <section className="section" aria-labelledby="intro-title">
+      <div className="wrap grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+        <Reveal>
+          <div className="eyebrow mb-5">What it is</div>
+          <h2 className="h2" id="intro-title">
+            An AI that belongs <span className="accent">to you.</span>
+          </h2>
+          <p className="lede mt-6 max-w-[48ch]">
+            Ashwatthama isn&apos;t a web app you log into. It&apos;s a desktop presence: an AI
+            operating companion that integrates with your computer, speaks and listens in natural
+            language, reads your screen and learns from every interaction.
+          </p>
+          <p className="body-text mt-5 max-w-[52ch]">
+            You ask it to draft an email, and it does. You ask what&apos;s on your screen, and it
+            describes it. You tell it something important, and it remembers, permanently, privately,
+            on your machine.
+          </p>
+        </Reveal>
 
-      <div
-        ref={refRight}
-        className={`border border-border bg-obsidian-raised p-6 md:p-10 relative overflow-hidden transition-all duration-700 delay-150 ${
-          visibleRight ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-        }`}
-      >
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(ellipse at 80% 20%, rgba(224,114,58,0.08) 0%, transparent 60%)",
-          }}
-        />
-        <div className="flex items-center gap-2 mb-5 pb-3.5 border-b border-border">
-          <div className="w-2 h-2 rounded-full bg-ember opacity-60" />
-          <div className="w-2 h-2 rounded-full bg-ember-glow opacity-45" />
-          <div className="w-2 h-2 rounded-full bg-bone-muted opacity-20" />
-          <span className="ml-1 font-mono text-label uppercase tracking-[0.28em] text-muted">
-            ashwatthama · active
-          </span>
-        </div>
+        <Reveal delay={0.1}>
+          <figure
+            className="overflow-hidden rounded-2xl border border-border-mid bg-obsidian-raised shadow-card"
+            aria-label="Example conversation with Ashwatthama"
+          >
+            <div className="flex items-center gap-2 border-b border-border px-5 py-3.5">
+              <span className="h-2.5 w-2.5 rounded-full bg-bone/20" aria-hidden="true" />
+              <span className="h-2.5 w-2.5 rounded-full bg-bone/20" aria-hidden="true" />
+              <span className="h-2.5 w-2.5 rounded-full bg-bone/20" aria-hidden="true" />
+              <span className="ml-2 font-mono text-label text-muted">ashwatthama · running locally</span>
+            </div>
 
-        <div className="font-mono leading-[1.6]" style={{ fontSize: "clamp(0.75rem, 1.3vw, 0.88rem)" }}>
-          <div className="flex items-start gap-3 mb-3.5">
-            <span className="text-ember flex-shrink-0">›</span>
-            <span className="text-bone">What did I discuss last Tuesday about the project deadline?</span>
-          </div>
-          <div className="flex items-start gap-3 mb-3.5">
-            <span className="text-ember-glow flex-shrink-0">◆</span>
-            <span className="text-bone-muted">
-              You noted the backend needed two more days and mentioned coordinating with the design team on Thursday. You also flagged the authentication flow as incomplete.
-            </span>
-          </div>
-          <div className="flex items-start gap-3 mt-2 mb-3.5">
-            <span className="text-ember flex-shrink-0">›</span>
-            <span className="text-bone">What's on my screen right now?</span>
-          </div>
-          <div className="flex items-start gap-3 mb-3.5">
-            <span className="text-ember-glow flex-shrink-0">◆</span>
-            <span className="text-bone-muted">
-              You have a code editor open with a Python file — looks like a route handler. There's also a browser tab showing pull requests.
-            </span>
-          </div>
-          <div className="flex items-start gap-3 mt-2 mb-3.5">
-            <span className="text-ember flex-shrink-0">›</span>
-            <span className="text-bone">Set a reminder for 4pm to review that PR.</span>
-          </div>
-          <div className="flex items-start gap-3">
-            <span className="text-ember-glow flex-shrink-0">◆</span>
-            <span className="text-bone-muted">
-              Done. I'll notify you at 4:00 PM.{" "}
-              <span className="inline-block w-2 h-[1em] bg-ember opacity-70 animate-pulse-dot align-text-bottom" />
-            </span>
-          </div>
-        </div>
+            <ol className="flex flex-col gap-4 p-5 md:p-7">
+              {exchange.map((m, i) => (
+                <li key={i} className="flex gap-3.5">
+                  <span
+                    className={`mt-0.5 w-[5.5rem] shrink-0 font-mono text-label uppercase ${
+                      m.who === "you" ? "text-muted" : "text-ember"
+                    }`}
+                  >
+                    {m.who === "you" ? "You" : "Ashwatthama"}
+                  </span>
+                  <p
+                    className={`text-[0.9375rem] leading-relaxed ${
+                      m.who === "you" ? "text-bone" : "text-bone-muted"
+                    }`}
+                  >
+                    {m.text}
+                    {m.cursor && (
+                      <span
+                        className="ml-1 inline-block h-[1em] w-[2px] translate-y-[2px] animate-blink bg-ember align-baseline"
+                        aria-hidden="true"
+                      />
+                    )}
+                  </p>
+                </li>
+              ))}
+            </ol>
 
-        <div className="border-t border-border mt-5 pt-3.5 flex gap-5 flex-wrap">
-          <span className="font-mono text-label uppercase tracking-[0.28em] text-muted">
-            100% Local
-          </span>
-          <span className="font-mono text-label uppercase tracking-[0.28em] text-muted">
-            Zero latency
-          </span>
-          <span className="font-mono text-label uppercase tracking-[0.28em] text-muted">
-            Always private
-          </span>
-        </div>
+            <figcaption className="flex flex-wrap gap-x-6 gap-y-1 border-t border-border px-5 py-3.5 font-mono text-label uppercase text-muted md:px-7">
+              <span>100% local</span>
+              <span>Zero latency</span>
+              <span>Always private</span>
+            </figcaption>
+          </figure>
+        </Reveal>
       </div>
     </section>
   );

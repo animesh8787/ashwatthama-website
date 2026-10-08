@@ -1,138 +1,79 @@
-"use client";
-
-import { motion } from "framer-motion";
-import { useScrollReveal } from "@/hooks/use-scroll-reveal";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { Globe, Terminal, FolderOpen, Clipboard, ArrowRight, ShieldCheck } from "lucide-react";
 import { SectionHeader } from "@/components/ui/section-header";
-import { TiltCard } from "@/components/ui/tilt-card";
-import {
-  Globe,
-  Terminal,
-  FolderOpen,
-  Clipboard,
-  ArrowRight,
-  Shield,
-  Lock,
-} from "lucide-react";
+import { Reveal } from "@/components/ui/reveal";
+import { SpotlightGrid } from "@/components/ui/spotlight";
+import { Button } from "@/components/ui/button";
 
 const capabilities = [
   {
     icon: Globe,
-    title: "Remote Desktop Streaming",
-    desc: "See and control your paired computer from anywhere. Real-time screen capture with low-latency WebRTC streaming — your desktop, in your pocket.",
+    title: "Remote desktop streaming",
+    desc: "See and control your paired computer from anywhere. Real-time screen capture with low-latency WebRTC streaming: your desktop, in your pocket.",
   },
   {
     icon: Terminal,
-    title: "Terminal Execution",
-    desc: "Run commands on your remote machine through a secure shell. Every command is authenticated, audited, and sandboxed to your trusted devices only.",
+    title: "Terminal execution",
+    desc: "Run commands on your remote machine through a secure shell. Every command is authenticated, audited and sandboxed to your trusted devices only.",
   },
   {
     icon: FolderOpen,
-    title: "File Operations",
-    desc: "Browse, download, upload, move, and delete files on your remote system. Browse directory trees, preview files, and transfer securely over your authenticated session.",
+    title: "File operations",
+    desc: "Browse, download, upload, move and delete files on your remote system. Preview files and transfer them securely over your authenticated session.",
   },
   {
     icon: Clipboard,
-    title: "Clipboard Sync",
+    title: "Clipboard sync",
     desc: "Copy on your phone, paste on your desktop. Bi-directional clipboard sync keeps your workflow seamless across every screen you own.",
   },
 ];
 
 export function RemoteAccessSection() {
-  const { ref, isVisible } = useScrollReveal<HTMLElement>();
-  const router = useRouter();
-
-  const handleCTA = () => {
-    // Remote desktop is locked for Version 1. Link to informational page.
-    router.push("/remote-desktop");
-  };
-
   return (
-    <section
-      ref={ref}
-      id="remote-access"
-      className="relative z-10 max-w-[1280px] mx-auto mt-16 md:mt-24 px-4 md:px-12"
-      aria-labelledby="remote-access-title"
-    >
-      <SectionHeader
-        eyebrow="Remote Control"
-        titleId="remote-access-title"
-        title={
-          <>
-            Your computer,
-            <br />
-            <em className="italic text-ember-glow">anywhere.</em>
-          </>
-        }
-        subtitle="Pair your desktop once, then control it from any browser or Android device. Two-layer authentication means your machine is never exposed to the world — only to you."
-        className="mb-10 md:mb-16 [&_.section-sub]:max-w-[60ch]"
-      />
+    <section id="remote-access" className="section" aria-labelledby="remote-access-title">
+      <div className="wrap">
+        <SectionHeader
+          eyebrow="Remote access"
+          titleId="remote-access-title"
+          title={
+            <>
+              Your computer, <span className="accent">anywhere.</span>
+            </>
+          }
+          subtitle="Pair your desktop once, then control it from any browser or Android device. Two-layer authentication means your machine is never exposed to the world, only to you."
+        />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-border-mid border border-border mb-10 md:mb-14">
-        {capabilities.map((cap, i) => (
-          <TiltCard key={cap.title} maxTilt={5}>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.05 + i * 0.08 }}
-              className="h-full bg-obsidian-raised p-6 md:p-8 flex flex-col gap-0 transition-colors duration-200 hover:bg-surface-hover"
-            >
-              <cap.icon
-                size={34}
-                className="text-ember opacity-85 mb-4"
-                strokeWidth={1.2}
-              />
-              <h3 className="font-display font-normal text-bone mb-2.5 leading-tight"
-                style={{ fontSize: "clamp(1.1rem, 1.9vw, 1.35rem)" }}
-              >
-                {cap.title}
-              </h3>
-              <p className="text-[0.88rem] leading-[1.7] text-muted flex-1">
-                {cap.desc}
+        <Reveal>
+          <SpotlightGrid className="sm:grid-cols-2">
+            {capabilities.map((c) => (
+              <article key={c.title} className="spot flex flex-col bg-obsidian-raised p-7 md:p-8">
+                <c.icon size={24} className="mb-6 text-ember" strokeWidth={1.4} aria-hidden="true" />
+                <h3 className="h3 mb-3">{c.title}</h3>
+                <p className="body-text flex-1 text-[0.9688rem]">{c.desc}</p>
+              </article>
+            ))}
+          </SpotlightGrid>
+        </Reveal>
+
+        <Reveal className="mt-6">
+          <div className="flex flex-col gap-5 rounded-2xl border border-border bg-obsidian-raised p-6 md:flex-row md:items-center md:justify-between md:p-8">
+            <div className="flex items-start gap-4">
+              <ShieldCheck size={26} className="mt-0.5 shrink-0 text-ember" strokeWidth={1.4} aria-hidden="true" />
+              <p className="body-text max-w-[62ch]">
+                <span className="font-medium text-bone">Two-layer security.</span> Layer 1
+                authenticates your identity. Layer 2 verifies your device with a unique access key.
+                Both must pass before any remote command is executed, and every action is audited.
               </p>
-            </motion.div>
-          </TiltCard>
-        ))}
+            </div>
+            <div className="flex shrink-0 flex-col items-start gap-2 md:items-end">
+              <Button href="/remote-desktop/" variant="secondary">
+                Learn more
+                <ArrowRight size={16} />
+              </Button>
+              <p className="font-mono text-label text-muted">Arriving in Version 2</p>
+            </div>
+          </div>
+        </Reveal>
       </div>
-
-      {/* Security callout */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={isVisible ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6, delay: 0.4 }}
-        className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 border border-border bg-obsidian-raised p-5 md:p-6 mb-10 md:mb-14"
-      >
-        <div className="flex items-center gap-3">
-          <Shield size={22} className="text-ember opacity-85" strokeWidth={1.2} />
-          <Lock size={22} className="text-ember opacity-85" strokeWidth={1.2} />
-        </div>
-        <p className="text-sm text-muted leading-relaxed">
-          <span className="text-bone font-medium">Two-layer security:</span>{" "}
-          Layer 1 authenticates your identity. Layer 2 verifies your device with a unique access key.
-          Both must pass before any remote command is executed. Every action is audited.
-        </p>
-      </motion.div>
-
-      {/* CTA */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={isVisible ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6, delay: 0.5 }}
-        className="text-center"
-      >
-        <Button
-          variant="primary"
-          onClick={handleCTA}
-          className="px-8 py-6 text-base"
-        >
-          Learn More
-          <ArrowRight size={16} className="ml-2" />
-        </Button>
-        <p className="text-muted text-xs mt-4 font-mono">
-          Remote desktop is coming in Version 2.
-        </p>
-      </motion.div>
     </section>
   );
 }

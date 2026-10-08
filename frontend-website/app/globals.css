@@ -1,82 +1,76 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=IBM+Plex+Mono:wght@300;400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --bg: #0e0a07;
-  --bg-rgb: 14 10 7;
-  --bg-raised: #13100c;
-  --bg-raised-rgb: 19 16 12;
-  --bg-overlay: rgba(18, 14, 10, 0.85);
-  --surface: rgba(26, 19, 14, 0.6);
-  --surface-rgb: 26 19 14;
-  --surface-hover: rgba(32, 24, 18, 0.85);
+  --bg: #0e0b08;
+  --bg-rgb: 14 11 8;
+  --bg-raised: #14100b;
+  --bg-raised-rgb: 20 16 11;
+  --bg-overlay: rgba(14, 11, 8, 0.86);
+  --surface: rgba(30, 23, 16, 0.7);
+  --surface-rgb: 30 23 16;
+  --surface-hover: rgba(36, 28, 20, 0.9);
 
-  --bone: #ece3d3;
-  --bone-muted: rgba(236, 227, 211, 0.72);
-  --muted: #9a9184;
-  --muted-2: rgba(154, 145, 132, 0.85);
+  --bone: #f0e7d6;
+  --bone-muted: rgba(240, 231, 214, 0.74);
+  --muted: #9d9382;
+  --muted-2: rgba(157, 147, 130, 0.85);
 
-  --ember: #e0723a;
-  --ember-rgb: 224 114 58;
+  --ember: #e8793d;
+  --ember-rgb: 232 121 61;
   --ember-soft: #c85e2a;
-  --ember-glow: #f3a861;
-  --ember-dim: rgba(224, 114, 58, 0.18);
-  --ember-focus: rgba(224, 114, 58, 0.2);
-  --ember-border: rgba(224, 114, 58, 0.28);
-  --ember-border-strong: rgba(224, 114, 58, 0.5);
+  --ember-glow: #f5a566;
+  --ember-dim: rgba(232, 121, 61, 0.12);
+  --ember-focus: rgba(232, 121, 61, 0.22);
+  --ember-border: rgba(232, 121, 61, 0.3);
+  --ember-border-strong: rgba(232, 121, 61, 0.55);
 
-  --border-color: rgba(120, 95, 70, 0.28);
-  --border-mid: rgba(120, 95, 70, 0.45);
-  --border-strong: rgba(120, 95, 70, 0.65);
+  --border-color: rgba(240, 231, 214, 0.1);
+  --border-mid: rgba(240, 231, 214, 0.18);
+  --border-strong: rgba(240, 231, 214, 0.3);
 
-  --shadow-ember: 0 0 48px -6px rgba(224, 114, 58, 0.55), 0 0 120px -24px rgba(243, 168, 97, 0.35);
-  --shadow-card: 0 4px 32px rgba(0, 0, 0, 0.5);
+  --crit-rgb: 255 122 107;
+  --ok-rgb: 123 216 143;
 
+  --grain-opacity: 0.055;
   color-scheme: dark;
 }
 
-/* Light theme — same warm/ember identity, inverted onto a parchment surface
-   rather than a generic corporate white, so it reads as "the same brand in
-   daylight" instead of a different product. Applied via [data-theme] set by
-   the boot script in layout.tsx (before paint) and toggled by ThemeProvider,
-   so it works the same for a stored preference or system default. */
+/* Light theme: the same warm identity on paper, not a generic white. Applied
+   via [data-theme], set before paint by the boot script in layout.tsx. */
 :root[data-theme="light"] {
-  --bg: #f8f3e9;
-  --bg-rgb: 248 243 233;
-  --bg-raised: #f1e9d8;
-  --bg-raised-rgb: 241 233 216;
-  --bg-overlay: rgba(248, 243, 233, 0.88);
-  --surface: rgba(255, 255, 255, 0.55);
+  --bg: #f6f1e7;
+  --bg-rgb: 246 241 231;
+  --bg-raised: #fbf8f1;
+  --bg-raised-rgb: 251 248 241;
+  --bg-overlay: rgba(246, 241, 231, 0.9);
+  --surface: rgba(255, 255, 255, 0.7);
   --surface-rgb: 255 255 255;
-  --surface-hover: rgba(255, 255, 255, 0.85);
+  --surface-hover: rgba(255, 255, 255, 0.95);
 
-  --bone: #241a10;
-  --bone-muted: rgba(36, 26, 16, 0.72);
-  /* Darkened from an earlier, lighter pass — that version measured 4.12:1
-     and 4.69:1 against --bg (below WCAG AA's 4.5:1 for normal text). These
-     values are re-verified above 4.5:1. */
-  --muted: #6c5b47;
-  --muted-2: rgba(108, 91, 71, 0.92);
+  --bone: #1c160c;
+  --bone-muted: rgba(28, 22, 12, 0.76);
+  --muted: #655b4b;
+  --muted-2: rgba(101, 91, 75, 0.92);
 
-  --ember: #a64414;
-  --ember-rgb: 166 68 20;
+  --ember: #a8460f;
+  --ember-rgb: 168 70 15;
   --ember-soft: #8f3a12;
-  --ember-glow: #e0723a;
-  --ember-dim: rgba(166, 68, 20, 0.1);
-  --ember-focus: rgba(166, 68, 20, 0.18);
-  --ember-border: rgba(166, 68, 20, 0.25);
-  --ember-border-strong: rgba(166, 68, 20, 0.45);
+  --ember-glow: #c4561a;
+  --ember-dim: rgba(168, 70, 15, 0.08);
+  --ember-focus: rgba(168, 70, 15, 0.2);
+  --ember-border: rgba(168, 70, 15, 0.28);
+  --ember-border-strong: rgba(168, 70, 15, 0.5);
 
-  --border-color: rgba(120, 95, 70, 0.16);
-  --border-mid: rgba(120, 95, 70, 0.26);
-  --border-strong: rgba(120, 95, 70, 0.4);
+  --border-color: rgba(32, 24, 12, 0.11);
+  --border-mid: rgba(32, 24, 12, 0.2);
+  --border-strong: rgba(32, 24, 12, 0.34);
 
-  --shadow-ember: 0 0 48px -6px rgba(166, 68, 20, 0.32), 0 0 120px -24px rgba(224, 114, 58, 0.2);
-  --shadow-card: 0 4px 32px rgba(60, 40, 20, 0.1);
+  --crit-rgb: 184 50 31;
+  --ok-rgb: 28 122 56;
 
+  --grain-opacity: 0.04;
   color-scheme: light;
 }
 
@@ -86,21 +80,26 @@
   }
 
   html {
-    scroll-behavior: smooth;
     font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+  }
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
   }
 
   body {
     @apply bg-obsidian text-bone font-sans antialiased;
-    line-height: 1.6;
+    font-size: 1rem;
+    line-height: 1.65;
     text-rendering: optimizeLegibility;
-    /* `clip`, not `hidden` — CSS forces overflow-y to compute as `auto`
-       whenever overflow-x is `hidden` and overflow-y was `visible`, which
-       makes body a second (out-of-sync) scroll container and silently
-       breaks position: sticky children like the pinned Pillars section.
-       `clip` prevents the same horizontal overflow without that promotion. */
+    /* `clip`, not `hidden`: `hidden` would make body a second scroll
+       container and break position: sticky descendants. */
     overflow-x: clip;
-    transition: background-color 0.5s ease, color 0.5s ease;
+    transition: background-color 0.4s ease, color 0.4s ease;
   }
 
   ::selection {
@@ -125,126 +124,129 @@
     outline: 0;
   }
 
-  /* Buttons and links have no built-in focus treatment of their own (Input
-     supplies its own border/glow focus style above), so give keyboard focus
-     a visible, on-brand ring instead of relying on the browser default. */
   button:focus-visible,
   a:focus-visible,
-  [tabindex]:focus-visible {
+  [tabindex]:focus-visible,
+  summary:focus-visible {
     outline: 2px solid var(--ember);
     outline-offset: 3px;
-    border-radius: 3px;
+    border-radius: 4px;
   }
 
   img,
-  svg {
+  svg,
+  video {
     display: block;
     max-width: 100%;
   }
 }
 
 @layer components {
+  /* Film grain, the same texture used across the product. */
   .grain::after {
     content: "";
     position: fixed;
     inset: 0;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.65 0 0 0 0 0.45 0 0 0 0 0.25 0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>");
-    opacity: 0.045;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    opacity: var(--grain-opacity);
     pointer-events: none;
-    mix-blend-mode: overlay;
     z-index: 200;
-    transition: opacity 0.5s ease;
   }
 
-  :root[data-theme="light"] .grain::after {
-    opacity: 0.03;
-    mix-blend-mode: multiply;
+  .skip-link {
+    @apply fixed left-3 -top-16 z-[300] rounded-xl bg-ember px-4 py-2.5 font-bold text-obsidian transition-[top] duration-200;
+  }
+  .skip-link:focus {
+    top: 0.75rem;
   }
 
-  .ambient-top {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 380px;
-    background: radial-gradient(ellipse 80% 100% at 50% -10%, rgba(var(--ember-rgb), 0.22) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-    transition: opacity 0.5s ease;
+  .wrap {
+    @apply mx-auto w-full max-w-[1180px] px-5 md:px-10;
   }
 
-  .ambient-bottom {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 240px;
-    background: radial-gradient(ellipse 60% 80% at 50% 110%, rgba(var(--ember-rgb), 0.09) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-    transition: opacity 0.5s ease;
+  .section {
+    @apply relative z-10 py-24 md:py-32;
   }
 
-  :root[data-theme="light"] .ambient-top,
-  :root[data-theme="light"] .ambient-bottom {
-    opacity: 0.55;
+  /* Small mono label with an ember diamond: the site's section marker. */
+  .eyebrow {
+    @apply inline-flex items-center gap-2.5 font-mono text-label uppercase text-muted;
   }
-
-  .scan {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background: repeating-linear-gradient(
-      to bottom,
-      transparent 0,
-      transparent 3px,
-      rgba(255, 255, 255, 0.008) 3px,
-      rgba(255, 255, 255, 0.008) 4px
-    );
-  }
-
-  :root[data-theme="light"] .scan {
-    background: repeating-linear-gradient(
-      to bottom,
-      transparent 0,
-      transparent 3px,
-      rgba(36, 26, 16, 0.008) 3px,
-      rgba(36, 26, 16, 0.008) 4px
-    );
-  }
-
-  .section-eyebrow {
-    @apply inline-flex items-center gap-2.5 font-mono text-label uppercase tracking-[0.38em] text-ember mb-[18px];
-  }
-
-  .section-eyebrow::before {
+  .eyebrow::before {
     content: "◆";
     font-size: 7px;
-    flex-shrink: 0;
+    color: var(--ember);
   }
 
-  .section-title {
-    @apply font-display font-light text-bone leading-[1.05];
-    font-size: clamp(1.9rem, 4.2vw, 3.4rem);
-    margin-bottom: 14px;
+  .h1 {
+    @apply font-display font-light text-bone;
+    font-size: clamp(2.6rem, 1.3rem + 5.2vw, 5.4rem);
+    line-height: 1;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
   }
 
-  .section-sub {
-    @apply text-bone-muted leading-[1.75];
-    font-size: clamp(0.9rem, 1.4vw, 0.98rem);
-    max-width: 56ch;
+  .h2 {
+    @apply font-display font-light text-bone;
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.6rem);
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
   }
 
-  .ruled-title {
-    @apply flex items-center gap-5 font-mono text-[9px] uppercase tracking-[0.4em] text-muted;
+  .h3 {
+    @apply font-display font-normal text-bone;
+    font-size: clamp(1.15rem, 1rem + 0.5vw, 1.4rem);
+    line-height: 1.2;
+    letter-spacing: -0.005em;
   }
 
-  .ruled-title::after {
+  /* One italic word per headline: the brand's accent voice. */
+  .accent {
+    @apply font-display italic font-light text-ember-glow;
+  }
+
+  .lede {
+    @apply text-bone-muted;
+    font-size: clamp(1rem, 0.95rem + 0.35vw, 1.2rem);
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+
+  .body-text {
+    @apply text-muted;
+    line-height: 1.7;
+    text-wrap: pretty;
+  }
+
+  /* Cards in a hairline-divided grid, with a spotlight that follows the
+     cursor. Set --mx / --my from pointer events (see components/ui/spotlight). */
+  .spot {
+    position: relative;
+    isolation: isolate;
+  }
+  .spot::before {
     content: "";
-    flex: 1;
-    height: 1px;
-    background: var(--border-color);
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 0%), var(--ember-dim), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .spot:hover::before {
+    opacity: 1;
+  }
+
+  /* Faint hairline grid for hero backdrops, masked to fade out at the edges. */
+  .grid-lines {
+    background-image:
+      linear-gradient(to right, var(--border-color) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--border-color) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(70% 70% at 50% 40%, #000 20%, transparent 95%);
+    -webkit-mask-image: radial-gradient(70% 70% at 50% 40%, #000 20%, transparent 95%);
   }
 
   .sr-only {
@@ -255,20 +257,6 @@
     clip: rect(0 0 0 0);
     white-space: nowrap;
   }
-
-  .label-mono {
-    @apply font-mono text-label uppercase text-muted;
-  }
-
-  /* Cursor-tracked glare for tilt-card hover — position set via JS custom
-     properties (--glare-x/--glare-y) on the card itself. */
-  .tilt-glare {
-    background: radial-gradient(
-      420px circle at var(--glare-x, 50%) var(--glare-y, 50%),
-      rgba(var(--ember-rgb), 0.14),
-      transparent 60%
-    );
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -276,9 +264,6 @@
   *::before,
   *::after {
     animation: none !important;
-    transition: none !important;
-  }
-  html {
-    scroll-behavior: auto;
+    transition-duration: 0.001ms !important;
   }
 }

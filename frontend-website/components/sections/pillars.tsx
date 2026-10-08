@@ -1,143 +1,202 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { SectionHeader } from "@/components/ui/section-header";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useReducedMotion } from "framer-motion";
 
 const pillars = [
   {
     num: "01",
     label: "Presence",
-    title: "Always On",
-    desc: "Listening for your voice. Ready before you finish the thought. No loading screens, no wake-up delays.",
+    head: (
+      <>
+        Ready before you <em className="accent">finish the thought.</em>
+      </>
+    ),
+    sub: "Listening for your voice. No loading screens, no wake-up delays.",
   },
   {
     num: "02",
     label: "Intelligence",
-    title: "Truly Thinks",
-    desc: "Powered by genuine reasoning that understands context, not scripted responses. It follows your mind, not a script.",
+    head: (
+      <>
+        It doesn&apos;t follow a script. It <em className="accent">thinks.</em>
+      </>
+    ),
+    sub: "Genuine reasoning that understands context, and follows your mind rather than a script.",
   },
   {
     num: "03",
     label: "Memory",
-    title: "Remembers You",
-    desc: "Builds a deep understanding of your work, preferences, and past conversations over time. It knows you.",
+    head: (
+      <>
+        It <em className="accent">remembers</em> you, permanently.
+      </>
+    ),
+    sub: "Your work, your preferences and your past conversations build into a deep understanding over time.",
   },
   {
     num: "04",
     label: "Privacy",
-    title: "Zero Cloud",
-    desc: "Every computation happens on your hardware. Your data never touches a server. Not even once.",
+    head: (
+      <>
+        Nothing ever <em className="accent">leaves.</em>
+      </>
+    ),
+    sub: "Every computation happens on your hardware. Your data never touches a server. Not even once.",
   },
 ];
 
-const COUNT = pillars.length;
-
+/**
+ * The four principles, told one at a time. The section pins to the viewport
+ * and the scroll position drives the story: each statement settles in, holds,
+ * and gives way to the next, while concentric rings behind it fill in.
+ */
 export function PillarsSection() {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState(0);
-
-  const { scrollYProgress } = useScroll({
-    target: trackRef,
-    offset: ["start start", "end end"],
-  });
+  const reduced = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+  const [phase, setPhase] = useState(0);
 
   useEffect(() => {
-    return scrollYProgress.on("change", (v) => {
-      const next = Math.min(COUNT - 1, Math.floor(v * COUNT));
-      setActive((prev) => (prev === next ? prev : next));
-    });
-  }, [scrollYProgress]);
+    if (reduced) return;
+    const section = sectionRef.current;
+    if (!section) return;
+    gsap.registerPlugin(ScrollTrigger);
 
-  // A slim glow that sweeps left-to-right across the pinned pane in step
-  // with overall scroll progress, so the panel still feels alive even
-  // between pillar transitions.
-  const sweepX = useTransform(scrollYProgress, [0, 1], ["-10%", "110%"]);
+    const ctx = gsap.context(() => {
+      const lines = gsap.utils.toArray<HTMLElement>(".story-line");
+      const rings = gsap.utils.toArray<HTMLElement>(".story-ring");
+      const core = section.querySelector<HTMLElement>(".story-core");
+
+      gsap.set(lines, { opacity: 0 });
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: () => "+=" + window.innerHeight * 3.6,
+          pin: true,
+          scrub: 0.6,
+          anticipatePin: 1,
+          onUpdate: (self) => {
+            const next = Math.min(pillars.length - 1, Math.floor(self.progress * pillars.length));
+            setPhase((p) => (p === next ? p : next));
+          },
+        },
+      });
+
+      lines.forEach((line, i) => {
+        tl.fromTo(
+          line,
+          { opacity: 0, y: 70, filter: "blur(10px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 1, ease: "power2.out" }
+        );
+        // each ring fills in as its statement arrives
+        if (rings[i]) tl.to(rings[i], { opacity: 1, scale: 1, duration: 1, ease: "power2.out" }, "<");
+        if (i < lines.length - 1) {
+          tl.to(line, { opacity: 0, y: -70, filter: "blur(10px)", duration: 1, ease: "power2.in" }, "+=0.9");
+        }
+      });
+      if (core) tl.to(core, { scale: 1.6, opacity: 1, duration: lines.length * 2, ease: "none" }, 0);
+    }, section);
+
+    return () => ctx.revert();
+  }, [reduced]);
+
+  // Reduced motion: the same four statements, stacked and always visible.
+  if (reduced) {
+    return (
+      <section className="section" aria-labelledby="pillars-title">
+        <div className="wrap">
+          <h2 id="pillars-title" className="sr-only">
+            Core principles
+          </h2>
+          <ol className="flex flex-col gap-20">
+            {pillars.map((p) => (
+              <li key={p.num} className="max-w-[26ch]">
+                <div className="eyebrow mb-5">
+                  {p.num} · {p.label}
+                </div>
+                <p className="h1">{p.head}</p>
+                <p className="lede mt-6 max-w-[44ch]">{p.sub}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section
-      className="relative z-10 max-w-[1280px] mx-auto mt-16 md:mt-24 px-4 md:px-12"
-      aria-label="Core capabilities"
+      ref={sectionRef}
+      className="relative z-10 grid h-dvh min-h-[560px] place-items-center overflow-hidden"
+      aria-labelledby="pillars-title"
     >
-      <SectionHeader
-        eyebrow="Core Capabilities"
-        title="Four pillars, one presence."
-        subtitle="Scroll through — each one stays on screen just long enough to land."
-        className="mb-8 md:mb-10"
-      />
+      <h2 id="pillars-title" className="sr-only">
+        Core principles
+      </h2>
 
-      {/* Tall scroll track: its height (not the pinned pane's) is what turns
-          continued scrolling into "time" the pinned pane can spend on each
-          pillar, the same mechanism behind Apple's product deep-dive
-          sections. */}
-      <div ref={trackRef} className="relative h-[320vh] md:h-[380vh]">
-        <div className="sticky top-0 h-dvh flex items-center overflow-hidden">
-          <div className="relative w-full border border-border bg-obsidian-raised overflow-hidden">
-            {/* Ambient sweep */}
-            <motion.div
-              aria-hidden="true"
-              style={{ left: sweepX }}
-              className="absolute top-0 bottom-0 w-[40%] pointer-events-none"
-            >
-              <div
-                className="w-full h-full"
-                style={{
-                  background:
-                    "radial-gradient(ellipse 60% 100% at 50% 50%, rgba(var(--ember-rgb),0.08), transparent 70%)",
-                }}
-              />
-            </motion.div>
-
-            <div className="relative grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-10 lg:gap-16 p-8 sm:p-12 md:p-16 lg:p-20">
-              <div className="min-h-[280px] sm:min-h-[240px] flex flex-col justify-center">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={active}
-                    initial={{ opacity: 0, y: 28 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -28 }}
-                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    <div className="font-mono text-label-lg uppercase tracking-[0.34em] text-ember mb-4 md:mb-6">
-                      {pillars[active].num} · {pillars[active].label}
-                    </div>
-                    <div
-                      className="font-display font-light text-bone leading-[1.02]"
-                      style={{ fontSize: "clamp(2.4rem, 7vw, 5.2rem)" }}
-                    >
-                      {pillars[active].title}
-                    </div>
-                    <p className="mt-4 md:mt-6 text-muted leading-[1.7] max-w-[46ch]" style={{ fontSize: "clamp(0.92rem, 1.6vw, 1.05rem)" }}>
-                      {pillars[active].desc}
-                    </p>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-
-              {/* Progress rail */}
-              <div className="flex lg:flex-col items-center lg:justify-center gap-3 lg:gap-5">
-                {pillars.map((p, i) => (
-                  <div key={p.num} className="flex lg:flex-col items-center gap-2">
-                    <span
-                      className={`h-px lg:h-8 w-8 lg:w-px transition-colors duration-500 ${
-                        i <= active ? "bg-ember" : "bg-border-mid"
-                      }`}
-                      aria-hidden="true"
-                    />
-                    <span
-                      className={`font-mono text-micro tabular-nums transition-colors duration-500 ${
-                        i === active ? "text-ember" : "text-muted-2"
-                      }`}
-                    >
-                      {p.num}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* concentric rings and a warm core, filled in by scroll */}
+      <div className="pointer-events-none absolute inset-0 grid place-items-center" aria-hidden="true">
+        <div
+          className="story-core absolute h-[44vmin] w-[44vmin] rounded-full opacity-60"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(var(--ember-rgb), 0.28), rgba(var(--ember-rgb), 0.06) 55%, transparent 72%)",
+          }}
+        />
+        {[28, 46, 66, 90].map((size, i) => (
+          <div
+            key={size}
+            className="story-ring absolute rounded-full border border-ember/20 opacity-25"
+            style={{ width: `${size}vmin`, height: `${size}vmin`, transform: `scale(${0.88 + i * 0.01})` }}
+          />
+        ))}
       </div>
+
+      <div className="relative z-[2] h-[70vh] w-full max-w-[1100px] px-5 md:px-10">
+        {pillars.map((p) => (
+          <div
+            key={p.num}
+            className="story-line absolute inset-0 flex flex-col items-center justify-center px-5 text-center md:px-10"
+          >
+            <div className="eyebrow mb-6">
+              {p.num} · {p.label}
+            </div>
+            <p
+              className="font-display font-light text-bone"
+              style={{
+                fontSize: "clamp(2.2rem, 1rem + 5.4vw, 5.6rem)",
+                lineHeight: 1.02,
+                letterSpacing: "-0.015em",
+                textWrap: "balance",
+              }}
+            >
+              {p.head}
+            </p>
+            <p className="lede mt-7 max-w-[44ch]">{p.sub}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* position within the sequence */}
+      <ol
+        className="absolute bottom-10 left-1/2 z-[2] flex -translate-x-1/2 items-center gap-3 font-mono text-micro text-muted"
+        aria-hidden="true"
+      >
+        {pillars.map((p, i) => (
+          <li key={p.num} className="flex items-center gap-3">
+            <span className={`transition-colors duration-500 ${i === phase ? "text-ember" : ""}`}>{p.num}</span>
+            {i < pillars.length - 1 && (
+              <span
+                className={`h-px w-8 transition-colors duration-500 ${i < phase ? "bg-ember" : "bg-border-mid"}`}
+              />
+            )}
+          </li>
+        ))}
+      </ol>
     </section>
   );
 }

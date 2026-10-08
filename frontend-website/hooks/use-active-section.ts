@@ -2,6 +2,12 @@
 
 import { useEffect, useState } from "react";
 
+/**
+ * Returns the id of the section currently crossing the reading line (a band
+ * near the top of the viewport), or null when none of them is. Tracking the
+ * full set of intersecting sections, rather than only the latest event, means
+ * the highlight clears when you leave the tracked sections instead of sticking.
+ */
 export function useActiveSection(ids: string[]) {
   const [activeId, setActiveId] = useState<string | null>(null);
 
@@ -12,16 +18,18 @@ export function useActiveSection(ids: string[]) {
 
     if (elements.length === 0 || !("IntersectionObserver" in window)) return;
 
+    const inside = new Set<string>();
     const observer = new IntersectionObserver(
       (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible[0]) {
-          setActiveId(visible[0].target.id);
+        for (const entry of entries) {
+          if (entry.isIntersecting) inside.add(entry.target.id);
+          else inside.delete(entry.target.id);
         }
+        // If two sections overlap the band, prefer the later one in the page.
+        const current = [...ids].reverse().find((id) => inside.has(id)) ?? null;
+        setActiveId(current);
       },
-      { rootMargin: "-30% 0px -55% 0px", threshold: [0, 0.25, 0.5, 1] }
+      { rootMargin: "-30% 0px -60% 0px" }
     );
 
     elements.forEach((el) => observer.observe(el));

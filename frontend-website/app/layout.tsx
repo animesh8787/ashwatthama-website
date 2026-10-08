@@ -1,8 +1,31 @@
 import type { Metadata, Viewport } from "next";
+import { Fraunces, Plus_Jakarta_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
-import { ScrollProgress } from "@/components/scroll-progress";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import { ThemeProvider } from "@/hooks/use-theme";
+
+// Fonts are fetched at build time and served from this site (no runtime
+// request to Google). Fraunces is the display serif, Plus Jakarta Sans the
+// body face, IBM Plex Mono the label face.
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  axes: ["opsz"],
+  display: "swap",
+  variable: "--font-fraunces",
+});
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  display: "swap",
+  variable: "--font-jakarta",
+});
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
+  display: "swap",
+  variable: "--font-plex",
+});
 
 // Applies the saved (or system) theme to <html> before first paint, so
 // there is no flash of the wrong theme on load. Runs as a blocking inline
@@ -61,7 +84,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#140e09",
+  themeColor: "#0e0b08",
 };
 
 export default function RootLayout({
@@ -70,28 +93,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${fraunces.variable} ${jakarta.variable} ${plexMono.variable}`}
+    >
       {/* suppressHydrationWarning: THEME_BOOT_SCRIPT below sets data-theme
           on this element before React hydrates, by design (avoids a flash
           of the wrong theme) — that intentional mismatch was logging a
           real-looking console warning on every load. */}
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
       </head>
       <body className="grain">
         <ThemeProvider>
+          <a href="#main" className="skip-link">
+            Skip to content
+          </a>
           <SmoothScroll />
-          <ScrollProgress />
-          {/* Global atmosphere layers */}
-          <div className="ambient-top" aria-hidden="true" />
-          <div className="ambient-bottom" aria-hidden="true" />
-          <div className="scan" aria-hidden="true" />
           {children}
         </ThemeProvider>
       </body>

@@ -30,7 +30,7 @@ export function EmberCanvas() {
     let W = 0;
     let H = 0;
     const particles: Particle[] = [];
-    const MAX = 55;
+    const MAX = 38;
     let animId: number;
 
     // Embers gently drift away from the pointer, as if disturbed by
@@ -121,10 +121,10 @@ export function EmberCanvas() {
         const t = p.life / p.maxLife;
         const alpha =
           t < 0.15
-            ? (t / 0.15) * 0.55
+            ? (t / 0.15) * 0.45
             : t > 0.75
-            ? (1 - (t - 0.75) / 0.25) * 0.55
-            : 0.55;
+            ? (1 - (t - 0.75) / 0.25) * 0.45
+            : 0.45;
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size * (1 - t * 0.5), 0, Math.PI * 2);

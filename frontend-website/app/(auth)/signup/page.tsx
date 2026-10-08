@@ -1,13 +1,13 @@
 "use client";
 
-import { Suspense, useState, useEffect } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { Check, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
-import { UserPlus, ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { AuthCard, FieldLabel, FormError } from "@/components/ui/auth-card";
 
 const passwordRules = [
   { test: (p: string) => p.length >= 8, label: "At least 8 characters" },
@@ -30,6 +30,54 @@ const REDIRECT_MAP: Record<string, string> = {
   download: "/download/",
 };
 
+function PasswordField({
+  id,
+  label,
+  value,
+  onChange,
+  onFocus,
+  onBlur,
+  autoComplete = "new-password",
+}: {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
+  autoComplete?: string;
+}) {
+  const [show, setShow] = useState(false);
+  return (
+    <div>
+      <FieldLabel htmlFor={id}>{label}</FieldLabel>
+      <div className="relative">
+        <Input
+          id={id}
+          type={show ? "text" : "password"}
+          required
+          autoComplete={autoComplete}
+          placeholder="••••••••"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          className="pr-12"
+        />
+        <button
+          type="button"
+          onClick={() => setShow((v) => !v)}
+          className="absolute right-0 top-0 flex h-full w-12 items-center justify-center text-muted transition-colors hover:text-bone"
+          aria-label={show ? "Hide password" : "Show password"}
+          aria-pressed={show}
+        >
+          {show ? <EyeOff size={17} /> : <Eye size={17} />}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function SignupForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -41,8 +89,6 @@ function SignupForm() {
   const [loading, setLoading] = useState(false);
   const [formError, setFormError] = useState("");
   const [passwordFocused, setPasswordFocused] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const redirectToken = searchParams.get("redirect");
   const redirectUrl = REDIRECT_MAP[redirectToken || ""] || "/download/";
@@ -81,152 +127,86 @@ function SignupForm() {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="border border-border bg-obsidian-raised p-8 md:p-10 relative overflow-hidden"
+    <AuthCard
+      title="Create your account."
+      subtitle="Free forever. An account secures your download."
+      back={{ href: "/", label: "Back to home" }}
     >
-      <div
-        className="absolute top-0 left-0 right-0 h-[2px] opacity-60"
-        style={{ background: "linear-gradient(to right, transparent, var(--ember), transparent)" }}
-      />
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(224,114,58,0.06) 0%, transparent 65%)" }}
-      />
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        <div>
+          <FieldLabel htmlFor="name">Name</FieldLabel>
+          <Input
+            id="name"
+            type="text"
+            autoComplete="name"
+            placeholder="Your name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div>
+          <FieldLabel htmlFor="email">Email</FieldLabel>
+          <Input
+            id="email"
+            type="email"
+            required
+            autoComplete="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
 
-      <div className="relative z-[1]">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-muted hover:text-ember transition-colors font-mono text-label uppercase tracking-[0.28em] mb-6"
-        >
-          <ArrowLeft size={12} />
-          Back to home
-        </Link>
-
-        <div className="section-eyebrow mb-2">Authentication</div>
-        <h1 className="font-display font-light text-bone text-2xl md:text-3xl mb-2">
-          Join the awakening.
-        </h1>
-        <p className="text-muted text-sm mb-8">
-          Create an account to secure your download and early access.
-        </p>
-
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div>
-            <label className="block font-mono text-label uppercase tracking-[0.28em] text-muted mb-2">
-              Display Name
-            </label>
-            <Input
-              type="text"
-              autoComplete="name"
-              placeholder="Animesh"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="block font-mono text-label uppercase tracking-[0.28em] text-muted mb-2">
-              Email
-            </label>
-            <Input
-              type="email"
-              required
-              autoComplete="email"
-              placeholder="your@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="block font-mono text-label uppercase tracking-[0.28em] text-muted mb-2">
-              Password
-            </label>
-            <div className="relative">
-              <Input
-                type={showPassword ? "text" : "password"}
-                required
-                autoComplete="new-password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onFocus={() => setPasswordFocused(true)}
-                onBlur={() => setPasswordFocused(false)}
-                className="pr-11"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword((v) => !v)}
-                className="absolute right-0 top-0 h-full w-11 flex items-center justify-center text-muted hover:text-ember transition-colors"
-                aria-label={showPassword ? "Hide password" : "Show password"}
-                aria-pressed={showPassword}
-              >
-                {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
-              </button>
-            </div>
-            {(passwordFocused || password.length > 0) && (
-              <div className="mt-2 grid grid-cols-2 gap-1">
-                {passwordRules.map((rule) => (
-                  <div
+        <div>
+          <PasswordField
+            id="password"
+            label="Password"
+            value={password}
+            onChange={setPassword}
+            onFocus={() => setPasswordFocused(true)}
+            onBlur={() => setPasswordFocused(false)}
+          />
+          {(passwordFocused || password.length > 0) && (
+            <ul className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1.5" aria-label="Password requirements">
+              {passwordRules.map((rule) => {
+                const ok = rule.test(password);
+                return (
+                  <li
                     key={rule.label}
-                    className={`flex items-center gap-1.5 font-mono text-micro transition-colors ${
-                      rule.test(password) ? "text-ember" : "text-muted"
+                    className={`flex items-center gap-1.5 text-[0.8125rem] transition-colors ${
+                      ok ? "text-ember" : "text-muted"
                     }`}
                   >
-                    <span>{rule.test(password) ? "✓" : "○"}</span>
+                    <Check size={13} className={ok ? "opacity-100" : "opacity-30"} aria-hidden="true" />
                     {rule.label}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-          <div>
-            <label className="block font-mono text-label uppercase tracking-[0.28em] text-muted mb-2">
-              Confirm Password
-            </label>
-            <div className="relative">
-              <Input
-                type={showConfirmPassword ? "text" : "password"}
-                required
-                autoComplete="new-password"
-                placeholder="••••••••"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="pr-11"
-              />
-              <button
-                type="button"
-                onClick={() => setShowConfirmPassword((v) => !v)}
-                className="absolute right-0 top-0 h-full w-11 flex items-center justify-center text-muted hover:text-ember transition-colors"
-                aria-label={showConfirmPassword ? "Hide password" : "Show password"}
-                aria-pressed={showConfirmPassword}
-              >
-                {showConfirmPassword ? <EyeOff size={15} /> : <Eye size={15} />}
-              </button>
-            </div>
-          </div>
-
-          {(formError || authError) && (
-            <p className="text-ember text-sm font-mono">{formError || authError}</p>
+                  </li>
+                );
+              })}
+            </ul>
           )}
-
-          <Button type="submit" variant="primary" disabled={loading || authLoading} className="mt-2">
-            <UserPlus size={14} />
-            {loading || authLoading ? "Creating account..." : "Create Account"}
-          </Button>
-        </form>
-
-        <div className="mt-6 text-center">
-          <Link
-            href="/login/"
-            className="text-muted hover:text-ember transition-colors font-mono text-label uppercase tracking-[0.22em]"
-          >
-            Already have an account? Sign in →
-          </Link>
         </div>
-      </div>
-    </motion.div>
+
+        <PasswordField
+          id="confirm-password"
+          label="Confirm password"
+          value={confirmPassword}
+          onChange={setConfirmPassword}
+        />
+
+        {(formError || authError) && <FormError>{formError || authError}</FormError>}
+
+        <Button type="submit" disabled={loading || authLoading} className="mt-1 w-full">
+          {loading || authLoading ? "Creating account…" : "Create account"}
+        </Button>
+      </form>
+
+      <p className="mt-8 text-center text-[0.9375rem] text-muted">
+        Already have an account?{" "}
+        <Link href="/login/" className="font-medium text-bone underline-offset-4 hover:text-ember hover:underline">
+          Sign in
+        </Link>
+      </p>
+    </AuthCard>
   );
 }
 
