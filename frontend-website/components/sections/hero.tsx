@@ -7,12 +7,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Download, Play } from "lucide-react";
 import { EmberCanvas } from "@/components/ember-canvas";
 import { Button } from "@/components/ui/button";
+import { useIntroDone } from "@/hooks/use-intro";
 
 const ease = [0.22, 0.8, 0.2, 1] as const;
 
-const fade = (delay: number) => ({
+const fade = (delay: number, ready: boolean) => ({
   initial: { opacity: 0, y: 16 },
-  animate: { opacity: 1, y: 0 },
+  animate: ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 },
   transition: { duration: 0.8, delay, ease },
 });
 
@@ -50,6 +51,7 @@ const sequence = [
 
 export function HeroSection() {
   const reduced = useReducedMotion();
+  const introDone = useIntroDone();
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -136,7 +138,7 @@ export function HeroSection() {
       <EmberCanvas />
 
       <div className="hero-intro relative z-[2] flex w-full max-w-[1100px] flex-col items-center pt-16">
-        <motion.div {...fade(0.05)}>
+        <motion.div {...fade(0.05, introDone)}>
           <span className="inline-flex items-center gap-2.5 rounded-full border border-border-mid bg-obsidian/50 px-4 py-1.5 font-mono text-label uppercase text-muted backdrop-blur">
             <span className="h-1.5 w-1.5 animate-pulse-dot rounded-full bg-ember" aria-hidden="true" />
             Available now for Windows
@@ -144,23 +146,23 @@ export function HeroSection() {
         </motion.div>
 
         <motion.h1
-          {...fade(0.15)}
+          {...fade(0.15, introDone)}
           className="h1 mt-8"
           style={{ fontSize: "clamp(3rem, 1rem + 11.5vw, 9.5rem)", letterSpacing: "0.005em", lineHeight: 0.92 }}
         >
           Ashwat<span className="accent">thama</span>
         </motion.h1>
 
-        <motion.p {...fade(0.3)} className="lede mt-6 max-w-[34ch] text-bone">
+        <motion.p {...fade(0.3, introDone)} className="lede mt-6 max-w-[34ch] text-bone">
           Not a chatbot. An AI that lives on your machine.
         </motion.p>
 
-        <motion.p {...fade(0.4)} className="body-text mt-4 max-w-[56ch]">
+        <motion.p {...fade(0.4, introDone)} className="body-text mt-4 max-w-[56ch]">
           Ashwatthama thinks alongside you. It works, remembers and assists, without a single byte
           leaving your computer. No subscriptions, no servers, no surveillance.
         </motion.p>
 
-        <motion.div {...fade(0.5)} className="mt-10 flex flex-wrap items-center justify-center gap-3">
+        <motion.div {...fade(0.5, introDone)} className="mt-10 flex flex-wrap items-center justify-center gap-3">
           <Button href="/download/" size="lg" magnetic>
             <Download size={17} />
             Download for Windows
@@ -172,7 +174,7 @@ export function HeroSection() {
         </motion.div>
 
         <motion.ul
-          {...fade(0.65)}
+          {...fade(0.65, introDone)}
           className="mt-14 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 font-mono text-label uppercase text-muted [@media(max-height:720px)]:hidden"
           aria-label="Highlights"
         >
@@ -191,6 +193,7 @@ export function HeroSection() {
           <div
             key={i}
             className="hero-line absolute inset-0 z-[2] flex flex-col items-center justify-center px-5 text-center md:px-10"
+            style={{ visibility: "hidden", opacity: 0 }}
           >
             <p
               className="max-w-[18ch] font-display font-light text-bone md:max-w-[22ch]"

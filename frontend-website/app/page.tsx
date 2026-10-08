@@ -1,4 +1,5 @@
 import { RemoteAccessSection } from "@/components/sections/remote-access";
+import { IntroLoader } from "@/components/intro-loader";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { HeroSection } from "@/components/sections/hero";
@@ -15,6 +16,7 @@ import { ContactSection } from "@/components/sections/contact";
 export default function Home() {
   return (
     <>
+      <IntroLoader />
       <Navbar />
       <main id="main">
         <HeroSection />

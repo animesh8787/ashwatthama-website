@@ -267,3 +267,9 @@
     transition-duration: 0.001ms !important;
   }
 }
+
+/* Opening screen (components/intro-loader.tsx) */
+html.intro-lock {
+  overflow: hidden;
+  scrollbar-gutter: stable;
+}
