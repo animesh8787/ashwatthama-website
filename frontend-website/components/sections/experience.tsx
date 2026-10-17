@@ -34,7 +34,7 @@ const waveHeights = [18, 30, 50, 40, 66, 44, 58, 34, 68, 46, 36, 62, 26, 50, 38,
 const waveDurations = [1.1, 0.82, 1.42, 0.95, 1.28, 0.78, 1.55, 1.02, 0.88, 1.35, 1.08, 0.92, 1.48, 0.8, 1.2, 1.05, 1.38, 0.86, 1.15, 0.98];
 
 const metrics = [
-  { value: "<300ms", label: "Response time" },
+  { value: "Live", label: "Speaks as it thinks" },
   { value: "100%", label: "Offline" },
   { value: "0", label: "Data sent" },
 ];

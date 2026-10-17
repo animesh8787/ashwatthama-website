@@ -23,12 +23,12 @@ const privacyItems = [
   {
     icon: Lock,
     title: "Encrypted at rest",
-    desc: "Diary entries and sensitive memory are encrypted using industry-standard algorithms. The master key lives in your OS credential vault, not in any file and not on any server.",
+    desc: "Diary entries, memories and conversation transcripts are encrypted at rest using industry-standard algorithms. The master key lives in your OS credential vault, not in any file and not on any server.",
   },
   {
     icon: WifiOff,
     title: "No telemetry, ever",
-    desc: "There are no analytics calls, no error reporting services and no background pings. Ashwatthama is silent on the network by design.",
+    desc: "There are no analytics calls and no error reporting services. The only background request is an update check, which you can turn off, and every request the app makes is listed in Settings → Privacy.",
   },
   {
     icon: Database,

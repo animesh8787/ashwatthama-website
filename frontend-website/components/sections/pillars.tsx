@@ -44,7 +44,7 @@ const pillars = [
         Nothing ever <em className="accent">leaves.</em>
       </>
     ),
-    sub: "Every computation happens on your hardware. Your data never touches a server. Not even once.",
+    sub: "Every AI computation happens on your hardware. Your voice, memories and conversations never touch a server.",
   },
 ];
 

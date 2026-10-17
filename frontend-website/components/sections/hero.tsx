@@ -36,7 +36,7 @@ const sequence = [
         No subscriptions. No servers. <em className="accent">No surveillance.</em>
       </>
     ),
-    sub: "Every computation happens on your own hardware.",
+    sub: "Every AI computation happens on your own hardware.",
   },
   {
     head: (

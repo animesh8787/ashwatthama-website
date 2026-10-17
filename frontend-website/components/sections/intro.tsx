@@ -77,7 +77,7 @@ export function IntroSection() {
 
             <figcaption className="flex flex-wrap gap-x-6 gap-y-1 border-t border-border px-5 py-3.5 font-mono text-label uppercase text-muted md:px-7">
               <span>100% local</span>
-              <span>Zero latency</span>
+              <span>Speaks as it thinks</span>
               <span>Always private</span>
             </figcaption>
           </figure>

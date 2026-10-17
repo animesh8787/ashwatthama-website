@@ -13,7 +13,7 @@ const faqs = [
   },
   {
     q: "Does it really work completely offline?",
-    a: "Yes. Voice recognition, wake word detection, text-to-speech, reasoning, memory and desktop controls all run locally with zero internet. The only features that require connectivity are web search and messaging apps, because those services themselves require the internet. The AI core is always 100% offline.",
+    a: "Yes. Voice recognition, wake word detection, text-to-speech, reasoning, memory and desktop controls all run locally with zero internet. The only features that require connectivity are web search and messaging apps, because those services themselves require the internet. The only automatic request is a check for app updates, which you can switch off in Settings. The AI core is always 100% offline.",
   },
   {
     q: "Is my voice data stored or sent anywhere?",

@@ -46,7 +46,7 @@ const features = [
   {
     icon: Clock,
     title: "Reminders and tasks",
-    desc: "“Remind me in 20 minutes to send that email.” Natural-language scheduling that fires at the right time, with no extra app.",
+    desc: "“Remind me in 20 minutes to send that email.” Natural-language scheduling that fires at the right time, and a spoken briefing of your day when you ask what's on.",
   },
   {
     icon: Search,
