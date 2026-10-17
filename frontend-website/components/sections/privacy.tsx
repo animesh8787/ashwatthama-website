@@ -33,7 +33,7 @@ const privacyItems = [
   {
     icon: Database,
     title: "Works fully offline",
-    desc: "Voice, reasoning, memory and desktop control all run offline. The internet is only used for features you explicitly ask for, like web search.",
+    desc: "Voice, reasoning, memory and desktop control all run offline. The internet is only used for features you explicitly ask for, like web search, or the optional Cloud mode you switch on with your own key.",
   },
 ];
 

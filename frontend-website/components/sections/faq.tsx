@@ -13,7 +13,7 @@ const faqs = [
   },
   {
     q: "Does it really work completely offline?",
-    a: "Yes. Voice recognition, wake word detection, text-to-speech, reasoning, memory and desktop controls all run locally with zero internet. The only features that require connectivity are web search and messaging apps, because those services themselves require the internet. The only automatic request is a check for app updates, which you can switch off in Settings. The AI core is always 100% offline.",
+    a: "Yes. Voice recognition, wake word detection, text-to-speech, reasoning, memory and desktop controls all run locally with zero internet. The only features that require connectivity are web search and messaging apps, because those services themselves require the internet. The only automatic request is a check for app updates, which you can switch off in Settings. If you want faster answers, optional Cloud mode sends the text of general questions to Groq (and replies to an ElevenLabs voice) using your own keys. It is off unless you turn it on, and your voice, memories and diary still stay on your PC.",
   },
   {
     q: "Is my voice data stored or sent anywhere?",
