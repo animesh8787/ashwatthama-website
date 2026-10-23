@@ -34,7 +34,7 @@ export function DemoSection() {
               Watch it <span className="accent">work.</span>
             </>
           }
-          subtitle="A full walkthrough of Ashwatthama running locally: voice, memory and desktop control."
+          subtitle="A full walkthrough of Ashwatthama running locally: asking in your own words, memory, your notes and privacy."
         />
 
         <Reveal>
@@ -72,7 +72,7 @@ export function DemoSection() {
                     <span className="mt-1 block text-[0.9375rem] text-bone-muted">
                       {videoMissing
                         ? "The full walkthrough is in production."
-                        : "Voice, memory and desktop control"}
+                        : "Commands, memory, notes and privacy"}
                     </span>
                   </span>
                 </motion.button>
